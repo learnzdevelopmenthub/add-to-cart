@@ -8,17 +8,13 @@ const cart = [];
 
 function displayProducts() {
     const productList = document.getElementById('product-list');
-    productList.innerHTML = '';
-    products.forEach(product => {
-        const productDiv = document.createElement('div');
-        productDiv.className = 'product';
-        productDiv.innerHTML = `
+    productList.innerHTML = products.map(product => `
+        <div class="product">
             <h3>${product.name}</h3>
             <p>Price: $${product.price}</p>
             <button onclick="addToCart(${product.id})">Add to Cart</button>
-        `;
-        productList.appendChild(productDiv);
-    });
+        </div>
+    `).join('');
 }
 
 function addToCart(productId) {
@@ -29,17 +25,19 @@ function addToCart(productId) {
 
 function displayCart() {
     const cartDiv = document.getElementById('cart');
-    cartDiv.innerHTML = '';
-    cart.forEach((product, index) => {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
-        cartItem.innerHTML = `
+    cartDiv.innerHTML = cart.map((product, index) => `
+        <div class="cart-item">
             <h4>${product.name}</h4>
             <p>Price: $${product.price}</p>
             <button onclick="removeFromCart(${index})">Remove</button>
-        `;
-        cartDiv.appendChild(cartItem);
-    });
+        </div>
+    `).join('');
+
+    const totalProducts = cart.length;
+    const totalAmount = cart.reduce((sum, product) => sum + product.price, 0);
+
+    document.getElementById('total-products').innerText = totalProducts;
+    document.getElementById('total-amount').innerText = totalAmount;
 }
 
 function removeFromCart(cartIndex) {
